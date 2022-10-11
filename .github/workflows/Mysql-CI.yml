@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Mysql Test
+name: Mysql CI
 
 on:
   push:
@@ -21,11 +21,23 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     env:
-      DB_DATABASE: test_db
+      DB_DATABASE: job-scheduler
       DB_USER: root
       DB_PASSWORD: root
     steps:
-      - name: Set up MySQL
+      - name: Set up MySQL 8
         run: |
           sudo /etc/init.d/mysql start
           mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+
+      - name: Checkout Sourse Code
+        uses: actions/checkout@v2.4.0
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: ${{ matrix.version }}
+          distribution: ${{ matrix.distribution }}
+
+      - name: Mvn Test
+        run: mvn test -Dspring.profiles.active=test
