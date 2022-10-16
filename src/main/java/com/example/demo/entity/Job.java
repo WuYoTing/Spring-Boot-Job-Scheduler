@@ -57,11 +57,14 @@ public class Job {
   @Column(name = "execution_status")
   private String executionStatus;
 
+  @Column(name = "created_date")
+  private Date createdDate;
 
   public Job(UUID userId, Date now, JobType jobType) {
     this.userId = String.valueOf(userId);
     this.jobId = String.valueOf(UUID.randomUUID());
     this.scheduledJobExecutionTime = now;
     this.jobType = jobType;
+    this.createdDate = now;
   }
 }

@@ -16,6 +16,9 @@ public class JobService {
 
   private final JobRepository jobRepository;
 
+  /**
+   * Submit Job Service
+   */
   public String submitJob(UUID userId, Date now, JobType jobType, int priority) {
     Job job = new Job(userId, now, jobType);
     job = jobRepository.save(job);
